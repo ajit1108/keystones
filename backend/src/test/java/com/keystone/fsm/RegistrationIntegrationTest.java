@@ -117,7 +117,7 @@ class RegistrationIntegrationTest {
     }
 
     @Test
-    void registrationCannotGrantStaffRoles() {
+    void registrationHonoursSelectedStaffRoleWithoutOrganisation() {
         Account account = newAccount();
 
         ResponseEntity<JsonNode> response = register(Map.of(
@@ -128,7 +128,26 @@ class RegistrationIntegrationTest {
                 "role", "MANAGER"));
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(response.getBody().get("role").asText()).isEqualTo("CUSTOMER");
+        assertThat(response.getBody().get("role").asText()).isEqualTo("MANAGER");
+
+        User saved = userRepository.findByEmailIgnoreCase(account.email()).orElseThrow();
+        assertThat(saved.getRole().name()).isEqualTo("MANAGER");
+        assertThat(saved.getCustomerId()).isNull();
+    }
+
+    @Test
+    void unknownRoleIsRejectedBeforeAnyWrite() {
+        Account account = newAccount();
+
+        ResponseEntity<JsonNode> response = register(Map.of(
+                "fullName", account.fullName(),
+                "email", account.email(),
+                "password", PASSWORD,
+                "confirmPassword", PASSWORD,
+                "role", "OWNER"));
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(userRepository.existsByEmailIgnoreCase(account.email())).isFalse();
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────

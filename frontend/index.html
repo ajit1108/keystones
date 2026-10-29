@@ -88,6 +88,39 @@
             <p class="field-msg" id="signup-name-msg" hidden></p>
           </div>
           <div class="form-group">
+            <span class="form-label" id="signup-role-label">I'm signing up as</span>
+            <div class="role-grid" role="radiogroup" aria-labelledby="signup-role-label">
+              <label class="role-option">
+                <input type="radio" name="signup-role" value="CUSTOMER" checked>
+                <span class="role-option-body">
+                  <span class="role-option-title">Customer</span>
+                  <span class="role-option-desc">Request and track service</span>
+                </span>
+              </label>
+              <label class="role-option">
+                <input type="radio" name="signup-role" value="TECHNICIAN">
+                <span class="role-option-body">
+                  <span class="role-option-title">Technician</span>
+                  <span class="role-option-desc">Work assigned jobs</span>
+                </span>
+              </label>
+              <label class="role-option">
+                <input type="radio" name="signup-role" value="DISPATCHER">
+                <span class="role-option-body">
+                  <span class="role-option-title">Dispatcher</span>
+                  <span class="role-option-desc">Coordinate schedules</span>
+                </span>
+              </label>
+              <label class="role-option">
+                <input type="radio" name="signup-role" value="MANAGER">
+                <span class="role-option-body">
+                  <span class="role-option-title">Manager</span>
+                  <span class="role-option-desc">Full workspace access</span>
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
             <label class="form-label" for="signup-email">Email address</label>
             <input class="form-input" id="signup-email" type="email" name="email" autocomplete="email"
                    maxlength="160" required aria-describedby="signup-email-msg"

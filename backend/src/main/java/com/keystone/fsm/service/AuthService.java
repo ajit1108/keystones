@@ -46,8 +46,9 @@ public class AuthService {
     }
 
     /**
-     * Self-service sign-up. Public callers always become CUSTOMER users linked to a
-     * dedicated organisation, so registration can never grant a staff role.
+     * Self-service sign-up. CUSTOMER accounts get a dedicated organisation; staff
+     * roles (MANAGER, DISPATCHER, TECHNICIAN) are created without one. Callers pick
+     * the role explicitly, defaulting to CUSTOMER when none is supplied.
      */
     @Transactional
     public UserResponse register(RegisterRequest request) {
@@ -59,10 +60,15 @@ public class AuthService {
             throw new DuplicateResourceException("An account with this email already exists");
         }
         String[] name = splitFullName(request.fullName());
-        CustomerResponse organisation = customerService.createCustomer(
-                new CreateCustomerRequest(uniqueOrganisationName(name), email, null, null));
+        Role role = request.role() == null ? Role.CUSTOMER : request.role();
+        String customerId = null;
+        if (role == Role.CUSTOMER) {
+            CustomerResponse organisation = customerService.createCustomer(
+                    new CreateCustomerRequest(uniqueOrganisationName(name), email, null, null));
+            customerId = organisation.id();
+        }
         return userService.createUser(new CreateUserRequest(
-                email, request.password(), name[0], name[1], Role.CUSTOMER, organisation.id()));
+                email, request.password(), name[0], name[1], role, customerId));
     }
 
     public UserResponse currentUser(KeystonePrincipal principal) {

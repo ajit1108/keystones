@@ -1,5 +1,6 @@
 package com.keystone.fsm.dto.request;
 
+import com.keystone.fsm.domain.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -14,7 +15,8 @@ public record RegisterRequest(
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d).+$",
              message = "Password must be at least 8 characters and include a letter and a number")
     String password,
-    @NotBlank @Size(max = 100) String confirmPassword
+    @NotBlank @Size(max = 100) String confirmPassword,
+    Role role
 ) {
     public RegisterRequest {
         if (fullName != null) fullName = fullName.trim().replaceAll("\\s+", " ");

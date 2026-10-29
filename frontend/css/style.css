@@ -188,6 +188,33 @@ body.modal-open { overflow: hidden; }
 .pw-meter[data-score="4"] span { background: var(--green); }
 .pw-hint { margin-top: 7px; font-size: 11.5px; color: var(--text-3); }
 
+.role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.role-option { position: relative; display: block; cursor: pointer; }
+.role-option input {
+  position: absolute; opacity: 0; width: 1px; height: 1px;
+  pointer-events: none;
+}
+.role-option-body {
+  display: flex; flex-direction: column; gap: 2px; height: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-dim); border-radius: 12px;
+  background: rgba(255, 255, 255, .02);
+  transition: border-color var(--transition), background var(--transition);
+}
+.role-option:hover .role-option-body {
+  border-color: var(--border);
+  background: rgba(255, 255, 255, .05);
+}
+.role-option input:checked + .role-option-body {
+  border-color: rgba(139, 92, 246, .65);
+  background: rgba(139, 92, 246, .12);
+}
+.role-option input:focus-visible + .role-option-body {
+  outline: 2px solid rgba(139, 92, 246, .7); outline-offset: 2px;
+}
+.role-option-title { font-size: 13px; font-weight: 600; color: var(--text-1); }
+.role-option-desc { font-size: 11px; line-height: 1.35; color: var(--text-3); }
+
 .auth-alt {
   margin-top: 22px; padding-top: 18px;
   border-top: 1px solid var(--border-dim);

@@ -212,13 +212,14 @@ async function handleRegister(event) {
   const email = document.getElementById('signup-email').value.trim();
   const password = document.getElementById('signup-password').value;
   const confirmPassword = document.getElementById('signup-confirm').value;
+  const role = document.querySelector('input[name="signup-role"]:checked')?.value || 'CUSTOMER';
 
   signupBusy = true;
   signupAlert('');
   setBtnBusy(btn, true, 'Creating account…');
 
   try {
-    await api.register({ fullName, email, password, confirmPassword });
+    await api.register({ fullName, email, password, confirmPassword, role });
     document.getElementById('signup-form').reset();
     updatePasswordMeter();
     document.getElementById('login-email').value = email;

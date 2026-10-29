@@ -61,7 +61,9 @@ async function request(method, path, body) {
 
   const res = await fetch(API_BASE + path, { method, headers, body: payload });
 
-  if (res.status === 401 && !path.startsWith('/api/auth/login')) {
+  // Only an authenticated call can "expire" a session; public auth calls must
+  // surface their own error message instead of a misleading session notice.
+  if (res.status === 401 && getToken() && !path.startsWith('/api/auth/login') && !path.startsWith('/api/auth/register')) {
     handleSessionExpired();
     throw Object.assign(new Error('Your session has expired. Please sign in again.'), { status: 401 });
   }
