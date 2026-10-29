@@ -1,0 +1,48 @@
+server:
+  # Hosting platforms (Render, Railway, Fly) inject PORT; 8080 remains the local default.
+  port: ${PORT:8080}
+  error:
+    include-stacktrace: never
+
+spring:
+  application:
+    name: keystone-fsm
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/keystone}
+      auto-index-creation: true
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:keystoneDefaultSecretKeyMustBeAtLeast256BitsLongForHS256AlgorithmSecurity}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  cors:
+    allowed-origin-patterns: ${CORS_ALLOWED_ORIGIN_PATTERNS:*}
+  uploads:
+    dir: ${UPLOAD_DIR:./uploads}
+    # filesystem | gridfs — gridfs keeps photos in MongoDB (needed on ephemeral hosts)
+    storage: ${UPLOAD_STORAGE:filesystem}
+    max-bytes: ${UPLOAD_MAX_BYTES:5242880}
+  seed:
+    # demo accounts/data are only sensible for local demos or public showcase databases
+    demo-enabled: ${SEED_DEMO_DATA:true}
+  sla:
+    check-interval-ms: ${SLA_CHECK_INTERVAL_MS:300000}
+    check-initial-delay-ms: ${SLA_CHECK_INITIAL_DELAY_MS:60000}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: alpha
+    tagsSorter: alpha
+
+logging:
+  level:
+    com.keystone: INFO
+    org.springframework.data.mongodb: INFO

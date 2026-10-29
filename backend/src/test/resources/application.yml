@@ -1,0 +1,28 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 7.0.14
+        storage:
+          repl-set-name: rs-test
+
+app:
+  jwt:
+    secret: testSecretKeyThatIsLongEnoughForHS256AtLeast32CharactersLong
+    expiration-ms: 3600000
+  uploads:
+    dir: target/test-uploads
+  sla:
+    check-interval-ms: 3600000
+    check-initial-delay-ms: 3600000
+
+logging:
+  level:
+    com.keystone: WARN
+    de.flapdoodle: WARN
+    org.springframework.data.mongodb: WARN

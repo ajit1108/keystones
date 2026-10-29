@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050508">
+  <title>Keystone FSM — Field Service Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#content">Skip to main content</a>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       LOGIN
+       ══════════════════════════════════════════════════════════════ -->
+  <div id="login-page">
+    <div class="login-left">
+      <div class="login-orb orb-a" aria-hidden="true"></div>
+      <div class="login-orb orb-b" aria-hidden="true"></div>
+
+      <div class="login-brand">
+        <div class="auth-badge"><span class="pulse-dot"></span> Field operations, orchestrated</div>
+
+        <div class="login-brand-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24"
+               fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+
+        <h1>Run every job<br><span>without friction.</span></h1>
+        <p>Keystone FSM · Field Service Management</p>
+
+        <div class="login-features">
+          <div class="login-feature">
+            <span class="feature-dot"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg></span>
+            Governed work-order lifecycle
+          </div>
+          <div class="login-feature">
+            <span class="feature-dot"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg></span>
+            SLA tracking &amp; breach alerts
+          </div>
+          <div class="login-feature">
+            <span class="feature-dot"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg></span>
+            Inventory, photos &amp; time logging
+          </div>
+          <div class="login-feature">
+            <span class="feature-dot"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg></span>
+            Customer self-service portal
+          </div>
+        </div>
+
+        <div class="login-proof">
+          <div><strong>7 states</strong><span>Governed lifecycle</span></div>
+          <div><strong>SLA</strong><span>Breach alerts</span></div>
+          <div><strong>4 roles</strong><span>Access control</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-right">
+      <div class="login-card">
+        <div class="login-mobile-brand">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          KEYSTONE
+        </div>
+
+        <h2>Welcome back</h2>
+        <p>Sign in to your workspace</p>
+
+        <div id="login-alert" aria-live="polite"></div>
+
+        <form id="login-form" onsubmit="handleLogin(event)" autocomplete="on">
+          <div class="form-group">
+            <label class="form-label" for="login-email">Email address</label>
+            <div class="input-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <input class="form-input" id="login-email" type="email" name="email"
+                     placeholder="you@company.com" autocomplete="username" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-password">Password</label>
+            <div class="pw-wrap">
+              <input class="form-input" id="login-password" type="password" name="password"
+                     placeholder="••••••••" autocomplete="current-password" required>
+              <button class="pw-toggle" type="button" id="pw-toggle"
+                      onclick="togglePassword()" aria-label="Show password">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-lg" id="login-btn" type="submit">Sign In</button>
+        </form>
+
+        <div class="demo-creds">
+          <div class="demo-label">Demo accounts — click to fill</div>
+          <div class="demo-grid">
+            <button type="button" class="demo-btn role-manager" onclick="fillLogin('manager@keystone.com','Manager1!')">
+              <span class="role">Manager</span><span class="email">manager@keystone.com</span>
+            </button>
+            <button type="button" class="demo-btn role-dispatcher" onclick="fillLogin('dispatcher@keystone.com','Dispatch1!')">
+              <span class="role">Dispatcher</span><span class="email">dispatcher@keystone.com</span>
+            </button>
+            <button type="button" class="demo-btn role-technician" onclick="fillLogin('tech1@keystone.com','Technic1!')">
+              <span class="role">Technician</span><span class="email">tech1@keystone.com</span>
+            </button>
+            <button type="button" class="demo-btn role-customer" onclick="fillLogin('customer@acmecorp.com','Customer1!')">
+              <span class="role">Customer</span><span class="email">customer@acmecorp.com</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       APP SHELL
+       ══════════════════════════════════════════════════════════════ -->
+  <div id="app" hidden>
+    <div id="mobile-backdrop" class="mobile-backdrop" onclick="closeSidebar()"></div>
+
+    <aside id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <span class="logo-text">KEYSTONE</span>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-nav"></nav>
+
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar" id="user-avatar">–</div>
+          <div class="user-info">
+            <div class="user-name" id="user-name">—</div>
+            <div class="user-role" id="user-role">—</div>
+          </div>
+        </div>
+        <button class="logout-btn" type="button" onclick="logout()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          <span>Sign out</span>
+        </button>
+      </div>
+    </aside>
+
+    <div id="main">
+      <header id="topbar">
+        <button class="topbar-toggle" type="button" onclick="toggleSidebar()" aria-label="Toggle navigation">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+
+        <span class="page-title" id="page-title">Dashboard</span>
+
+        <div class="topbar-right">
+          <div class="notif-wrap">
+            <button class="topbar-toggle notif-btn" type="button" id="notif-btn"
+                    onclick="toggleNotifications(event)" aria-label="Notifications" aria-haspopup="true" aria-expanded="false">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+              <span class="notif-badge" id="notif-badge" hidden>0</span>
+            </button>
+
+            <div class="notif-panel" id="notif-panel" hidden>
+              <div class="notif-head">
+                <span>Notifications</span>
+                <button class="btn btn-ghost btn-sm" type="button" onclick="markAllNotificationsRead()">Mark all read</button>
+              </div>
+              <div id="notif-list"></div>
+            </div>
+          </div>
+
+          <div class="topbar-badge" id="connection-badge" title="Connected">
+            <span class="status-dot" id="connection-dot"></span>
+            <span id="topbar-role">—</span>
+          </div>
+        </div>
+      </header>
+
+      <main id="content">
+        <section id="page-dashboard" class="page"></section>
+        <section id="page-workorders" class="page"></section>
+        <section id="page-myjobs" class="page"></section>
+        <section id="page-portal" class="page"></section>
+        <section id="page-customers" class="page"></section>
+        <section id="page-parts" class="page"></section>
+        <section id="page-users" class="page"></section>
+        <section id="page-reports" class="page"></section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       MODALS
+       ══════════════════════════════════════════════════════════════ -->
+
+  <!-- Work order detail -->
+  <div class="modal-overlay" id="modal-wo-detail" role="dialog" aria-modal="true" aria-hidden="true"
+       aria-label="Work order detail" onclick="if(event.target===this) closeModal('modal-wo-detail')">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h2 class="modal-title">Work Order</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-wo-detail')" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="wo-detail-body"></div>
+    </div>
+  </div>
+
+  <!-- Create work order / customer request -->
+  <div class="modal-overlay" id="modal-create-wo" role="dialog" aria-modal="true" aria-hidden="true"
+       aria-labelledby="create-wo-title" onclick="if(event.target===this) closeModal('modal-create-wo')">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="create-wo-title">New Work Order</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-create-wo')" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="create-wo-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-create-wo')">Cancel</button>
+        <button class="btn btn-primary" id="create-wo-submit" type="button" onclick="submitCreateWO()">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assign technician -->
+  <div class="modal-overlay" id="modal-assign" role="dialog" aria-modal="true" aria-hidden="true"
+       aria-label="Assign technician" onclick="if(event.target===this) closeModal('modal-assign')">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Assign Technician</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-assign')" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="assign-wo-id">
+        <div id="assign-alert"></div>
+        <div class="form-group">
+          <label class="form-label" for="assign-tech-select">Technician</label>
+          <select class="form-select" id="assign-tech-select"></select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-assign')">Cancel</button>
+        <button class="btn btn-primary" id="assign-submit" type="button" onclick="submitAssign()">Assign</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Log time -->
+  <div class="modal-overlay" id="modal-log-time" role="dialog" aria-modal="true" aria-hidden="true"
+       aria-label="Log time" onclick="if(event.target===this) closeModal('modal-log-time')">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Log Time</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-log-time')" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="log-time-wo-id">
+        <div id="log-time-alert"></div>
+        <div class="form-group">
+          <label class="form-label" for="log-minutes">Minutes spent *</label>
+          <input class="form-input" id="log-minutes" type="number" min="1" max="1440" placeholder="e.g. 45">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="log-notes">Notes</label>
+          <textarea class="form-textarea" id="log-notes" placeholder="What was done?"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-log-time')">Cancel</button>
+        <button class="btn btn-primary" id="log-time-submit" type="button" onclick="submitLogTime()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add part usage -->
+  <div class="modal-overlay" id="modal-add-part" role="dialog" aria-modal="true" aria-hidden="true"
+       aria-label="Record part usage" onclick="if(event.target===this) closeModal('modal-add-part')">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Record Part Usage</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-add-part')" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="part-wo-id">
+        <div id="add-part-alert"></div>
+        <div class="form-group">
+          <label class="form-label" for="part-select">Part *</label>
+          <select class="form-select" id="part-select"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="part-qty">Quantity *</label>
+          <input class="form-input" id="part-qty" type="number" min="1" value="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="part-notes">Notes</label>
+          <input class="form-input" id="part-notes" placeholder="Optional">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-add-part')">Cancel</button>
+        <button class="btn btn-primary" id="add-part-submit" type="button" onclick="submitAddPart()">Record</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customer create/edit -->
+  <div class="modal-overlay" id="modal-customer" role="dialog" aria-modal="true" aria-hidden="true"
+       aria-labelledby="cust-modal-title" onclick="if(event.target===this) closeModal('modal-customer')">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="cust-modal-title">New Customer</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-customer')" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="cust-modal-id">
+        <div id="cust-alert"></div>
+        <div class="form-group">
+          <label class="form-label" for="cust-name">Name *</label>
+          <input class="form-input" id="cust-name" placeholder="Acme Corp">
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label class="form-label" for="cust-email">Contact email</label>
+            <input class="form-input" id="cust-email" type="email" placeholder="contact@acme.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cust-phone">Phone</label>
+            <input class="form-input" id="cust-phone" placeholder="+1 555 0101">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cust-address">Address</label>
+          <input class="form-input" id="cust-address" placeholder="123 Industrial Ave">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-customer')">Cancel</button>
+        <button class="btn btn-primary" id="cust-submit" type="button" onclick="submitCustomer()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sites -->
+  <div class="modal-overlay" id="modal-sites" role="dialog" aria-modal="true" aria-hidden="true"
+       aria-labelledby="sites-modal-title" onclick="if(event.target===this) closeModal('modal-sites')">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h2 class="modal-title" id="sites-modal-title">Sites</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-sites')" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="sites-modal-cust-id">
+        <input type="hidden" id="site-edit-id">
+        <div id="sites-list"></div>
+
+        <div class="divider"></div>
+        <h3 class="card-title mb-3" id="site-form-title">Add a site</h3>
+        <div id="sites-alert"></div>
+        <div class="input-row">
+          <div class="form-group">
+            <label class="form-label" for="site-name">Site name *</label>
+            <input class="form-input" id="site-name" placeholder="Main HQ">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="site-address">Address</label>
+            <input class="form-input" id="site-address" placeholder="123 Industrial Ave">
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label class="form-label" for="site-city">City</label>
+            <input class="form-input" id="site-city" placeholder="Springfield">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="site-state">State</label>
+            <input class="form-input" id="site-state" placeholder="IL">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="site-postal">Postal code</label>
+            <input class="form-input" id="site-postal" placeholder="62701">
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label class="form-label" for="site-country">Country</label>
+            <input class="form-input" id="site-country" placeholder="USA">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="site-contact-name">Contact name</label>
+            <input class="form-input" id="site-contact-name" placeholder="Facilities manager">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="site-contact-phone">Contact phone</label>
+            <input class="form-input" id="site-contact-phone" placeholder="+1 555 0101">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="resetSiteForm()">Clear</button>
+        <button class="btn btn-primary" type="button" onclick="submitSite()" id="site-submit-btn">Add Site</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Part create/edit -->
+  <div class="modal-overlay" id="modal-part" role="dialog" aria-modal="true" aria-hidden="true"
+       aria-labelledby="part-modal-title" onclick="if(event.target===this) closeModal('modal-part')">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="part-modal-title">New Part</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-part')" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="part-modal-id">
+        <div id="part-modal-alert"></div>
+        <div class="input-row">
+          <div class="form-group">
+            <label class="form-label" for="part-pn">Part number *</label>
+            <input class="form-input" id="part-pn" placeholder="FILT-001">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="part-uom">Unit of measure</label>
+            <input class="form-input" id="part-uom" placeholder="EACH">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="part-name">Name *</label>
+          <input class="form-input" id="part-name" placeholder="Air Filter">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="part-desc">Description</label>
+          <textarea class="form-textarea" id="part-desc" placeholder="Optional details…"></textarea>
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label class="form-label" for="part-stock">Quantity in stock</label>
+            <input class="form-input" id="part-stock" type="number" min="0" value="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="part-reorder">Reorder level</label>
+            <input class="form-input" id="part-reorder" type="number" min="0" value="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="part-cost">Unit cost</label>
+            <input class="form-input" id="part-cost" type="number" min="0" step="0.01" placeholder="0.00">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-part')">Cancel</button>
+        <button class="btn btn-primary" id="part-submit" type="button" onclick="submitPart()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create user -->
+  <div class="modal-overlay" id="modal-create-user" role="dialog" aria-modal="true" aria-hidden="true"
+       aria-label="Create user" onclick="if(event.target===this) closeModal('modal-create-user')">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">New User</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-create-user')" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="new-user-alert"></div>
+        <div class="input-row">
+          <div class="form-group">
+            <label class="form-label" for="new-user-fname">First name *</label>
+            <input class="form-input" id="new-user-fname">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="new-user-lname">Last name *</label>
+            <input class="form-input" id="new-user-lname">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="new-user-email">Email *</label>
+          <input class="form-input" id="new-user-email" type="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="new-user-pw">Temporary password * (min 8 characters)</label>
+          <input class="form-input" id="new-user-pw" type="password" autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="new-user-role">Role *</label>
+          <select class="form-select" id="new-user-role" onchange="toggleUserCustomerField('new')">
+            <option value="TECHNICIAN">TECHNICIAN</option>
+            <option value="DISPATCHER">DISPATCHER</option>
+            <option value="MANAGER">MANAGER</option>
+            <option value="CUSTOMER">CUSTOMER</option>
+          </select>
+        </div>
+        <div class="form-group" id="new-user-customer-group" hidden>
+          <label class="form-label" for="new-user-customer">Customer organisation *</label>
+          <select class="form-select" id="new-user-customer"></select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-create-user')">Cancel</button>
+        <button class="btn btn-primary" id="new-user-submit" type="button" onclick="submitCreateUser()">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit user -->
+  <div class="modal-overlay" id="modal-edit-user" role="dialog" aria-modal="true" aria-hidden="true"
+       aria-label="Edit user" onclick="if(event.target===this) closeModal('modal-edit-user')">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Edit User</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-edit-user')" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="edit-user-id">
+        <div id="edit-user-alert"></div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" id="edit-user-email" disabled>
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label class="form-label" for="edit-user-fname">First name *</label>
+            <input class="form-input" id="edit-user-fname">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-user-lname">Last name *</label>
+            <input class="form-input" id="edit-user-lname">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="edit-user-role">Role *</label>
+          <select class="form-select" id="edit-user-role">
+            <option value="TECHNICIAN">TECHNICIAN</option>
+            <option value="DISPATCHER">DISPATCHER</option>
+            <option value="MANAGER">MANAGER</option>
+            <option value="CUSTOMER">CUSTOMER</option>
+          </select>
+        </div>
+        <label class="switch-row">
+          <input type="checkbox" id="edit-user-enabled">
+          <span>Account enabled</span>
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-edit-user')">Cancel</button>
+        <button class="btn btn-primary" id="edit-user-submit" type="button" onclick="submitEditUser()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status transition note -->
+  <div class="modal-overlay" id="modal-transition" role="dialog" aria-modal="true" aria-hidden="true"
+       aria-labelledby="transition-title" onclick="if(event.target===this) closeModal('modal-transition')">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="transition-title">Update Status</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-transition')" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="transition-alert"></div>
+        <p class="text-muted text-sm mb-3" id="transition-desc">Add an optional note for this status change.</p>
+        <div class="form-group">
+          <label class="form-label" for="transition-note">Note</label>
+          <textarea class="form-textarea" id="transition-note" placeholder="Why is the status changing?"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-transition')">Cancel</button>
+        <button class="btn btn-primary" id="transition-submit" type="button" onclick="submitTransition()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo lightbox -->
+  <div id="photo-lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Photo preview"
+       onclick="if(event.target===this) closeLightbox()">
+    <div class="lightbox-inner">
+      <img id="lightbox-img" alt="">
+      <div class="lightbox-bar">
+        <span class="lightbox-caption" id="lightbox-caption"></span>
+        <div class="lightbox-actions">
+          <button class="btn btn-secondary btn-sm" type="button" id="lightbox-download">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download
+          </button>
+          <button class="btn btn-secondary btn-sm" type="button" onclick="closeLightbox()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden photo picker -->
+  <input type="file" id="photo-input" accept="image/png,image/jpeg,image/webp,image/gif" hidden
+         onchange="handlePhotoSelected(this)">
+
+  <div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/pages.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
