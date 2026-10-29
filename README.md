@@ -188,11 +188,11 @@ Notes and limitations:
 
 ## 6. API overview
 
-All endpoints are under `/api` and require `Authorization: Bearer <token>` except login and the OpenAPI routes.
+All endpoints are under `/api` and require `Authorization: Bearer <token>` except login, registration, and the OpenAPI routes.
 
 | Area | Endpoints |
 |------|-----------|
-| Auth | `POST /auth/login`, `GET /auth/me` |
+| Auth | `POST /auth/login`, `POST /auth/register`, `GET /auth/me` |
 | Users | `GET /users`, `GET /users/technicians`, `GET /users/{id}`, `POST /users`, `PUT /users/{id}` |
 | Customers | `GET/POST /customers`, `GET /customers/me`, `GET/PUT /customers/{id}` |
 | Sites | `GET/POST /customers/{id}/sites`, `GET /customers/{id}/sites/all`, `GET/PUT /customers/{id}/sites/{siteId}` |

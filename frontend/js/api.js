@@ -100,6 +100,7 @@ const api = {
 
   // Auth
   login: (email, password) => request('POST', '/api/auth/login', { email, password }),
+  register: (data) => request('POST', '/api/auth/register', data),
   me:    () => request('GET', '/api/auth/me'),
 
   // Users

@@ -13,90 +13,39 @@
   <a class="skip-link" href="#content">Skip to main content</a>
 
   <!-- ══════════════════════════════════════════════════════════════
-       LOGIN
+       AUTHENTICATION
        ══════════════════════════════════════════════════════════════ -->
   <div id="login-page">
-    <div class="login-left">
-      <div class="login-orb orb-a" aria-hidden="true"></div>
-      <div class="login-orb orb-b" aria-hidden="true"></div>
-
-      <div class="login-brand">
-        <div class="auth-badge"><span class="pulse-dot"></span> Field operations, orchestrated</div>
-
-        <div class="login-brand-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24"
-               fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-        </div>
-
-        <h1>Run every job<br><span>without friction.</span></h1>
-        <p>Keystone FSM · Field Service Management</p>
-
-        <div class="login-features">
-          <div class="login-feature">
-            <span class="feature-dot"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg></span>
-            Governed work-order lifecycle
-          </div>
-          <div class="login-feature">
-            <span class="feature-dot"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg></span>
-            SLA tracking &amp; breach alerts
-          </div>
-          <div class="login-feature">
-            <span class="feature-dot"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg></span>
-            Inventory, photos &amp; time logging
-          </div>
-          <div class="login-feature">
-            <span class="feature-dot"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg></span>
-            Customer self-service portal
-          </div>
-        </div>
-
-        <div class="login-proof">
-          <div><strong>7 states</strong><span>Governed lifecycle</span></div>
-          <div><strong>SLA</strong><span>Breach alerts</span></div>
-          <div><strong>4 roles</strong><span>Access control</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="login-right">
-      <div class="login-card">
-        <div class="login-mobile-brand">
+    <section class="auth-panel active" id="auth-login" aria-labelledby="login-heading">
+      <div class="auth-card">
+        <div class="auth-brand">
           <div class="logo-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                  fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
             </svg>
           </div>
-          KEYSTONE
+          <span>KEYSTONE</span>
         </div>
 
-        <h2>Welcome back</h2>
-        <p>Sign in to your workspace</p>
+        <h2 id="login-heading">Welcome back</h2>
 
-        <div id="login-alert" aria-live="polite"></div>
+        <div id="login-alert" role="status" aria-live="polite"></div>
 
         <form id="login-form" onsubmit="handleLogin(event)" autocomplete="on">
           <div class="form-group">
             <label class="form-label" for="login-email">Email address</label>
-            <div class="input-wrap">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                   fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                <polyline points="22,6 12,13 2,6"/>
-              </svg>
-              <input class="form-input" id="login-email" type="email" name="email"
-                     placeholder="you@company.com" autocomplete="username" required>
-            </div>
+            <input class="form-input" id="login-email" type="email" name="email"
+                   autocomplete="username" required>
           </div>
           <div class="form-group">
             <label class="form-label" for="login-password">Password</label>
             <div class="pw-wrap">
               <input class="form-input" id="login-password" type="password" name="password"
-                     placeholder="••••••••" autocomplete="current-password" required>
-              <button class="pw-toggle" type="button" id="pw-toggle"
-                      onclick="togglePassword()" aria-label="Show password">
+                     autocomplete="current-password" required>
+              <button class="pw-toggle" type="button" id="login-pw-toggle"
+                      onclick="togglePasswordVisibility('login-password', this)"
+                      aria-label="Show password" aria-pressed="false">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
@@ -108,25 +57,92 @@
           <button class="btn btn-primary btn-lg" id="login-btn" type="submit">Sign In</button>
         </form>
 
-        <div class="demo-creds">
-          <div class="demo-label">Demo accounts — click to fill</div>
-          <div class="demo-grid">
-            <button type="button" class="demo-btn role-manager" onclick="fillLogin('manager@keystone.com','Manager1!')">
-              <span class="role">Manager</span><span class="email">manager@keystone.com</span>
-            </button>
-            <button type="button" class="demo-btn role-dispatcher" onclick="fillLogin('dispatcher@keystone.com','Dispatch1!')">
-              <span class="role">Dispatcher</span><span class="email">dispatcher@keystone.com</span>
-            </button>
-            <button type="button" class="demo-btn role-technician" onclick="fillLogin('tech1@keystone.com','Technic1!')">
-              <span class="role">Technician</span><span class="email">tech1@keystone.com</span>
-            </button>
-            <button type="button" class="demo-btn role-customer" onclick="fillLogin('customer@acmecorp.com','Customer1!')">
-              <span class="role">Customer</span><span class="email">customer@acmecorp.com</span>
-            </button>
-          </div>
-        </div>
+        <p class="auth-alt">Don't have an account?
+          <button class="auth-link" type="button" onclick="showSignup()">Sign Up</button>
+        </p>
       </div>
-    </div>
+    </section>
+
+    <section class="auth-panel" id="auth-signup" aria-labelledby="signup-heading" aria-hidden="true">
+      <div class="auth-card">
+        <div class="auth-brand">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <span>KEYSTONE</span>
+        </div>
+
+        <h2 id="signup-heading">Create your account</h2>
+
+        <div id="signup-alert" role="status" aria-live="polite"></div>
+
+        <form id="signup-form" onsubmit="handleRegister(event)" novalidate autocomplete="on">
+          <div class="form-group">
+            <label class="form-label" for="signup-name">Full name</label>
+            <input class="form-input" id="signup-name" type="text" name="name" autocomplete="name"
+                   maxlength="160" required aria-describedby="signup-name-msg"
+                   oninput="clearFieldError('signup-name')">
+            <p class="field-msg" id="signup-name-msg" hidden></p>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-email">Email address</label>
+            <input class="form-input" id="signup-email" type="email" name="email" autocomplete="email"
+                   maxlength="160" required aria-describedby="signup-email-msg"
+                   oninput="clearFieldError('signup-email')">
+            <p class="field-msg" id="signup-email-msg" hidden></p>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-password">Password</label>
+            <div class="pw-wrap">
+              <input class="form-input" id="signup-password" type="password" name="new-password"
+                     autocomplete="new-password" maxlength="100" required
+                     aria-describedby="signup-password-msg signup-pw-strength"
+                     oninput="clearFieldError('signup-password'); updatePasswordMeter()">
+              <button class="pw-toggle" type="button" id="signup-pw-toggle"
+                      onclick="togglePasswordVisibility('signup-password', this)"
+                      aria-label="Show password" aria-pressed="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <div class="pw-meter" id="signup-pw-meter" data-score="0" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <p class="pw-hint" id="signup-pw-strength" aria-live="polite">Use 8+ characters with a letter and a number</p>
+            <p class="field-msg" id="signup-password-msg" hidden></p>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-confirm">Confirm password</label>
+            <div class="pw-wrap">
+              <input class="form-input" id="signup-confirm" type="password" name="confirm-password"
+                     autocomplete="new-password" maxlength="100" required
+                     aria-describedby="signup-confirm-msg"
+                     oninput="clearFieldError('signup-confirm')">
+              <button class="pw-toggle" type="button" id="signup-confirm-toggle"
+                      onclick="togglePasswordVisibility('signup-confirm', this)"
+                      aria-label="Show password" aria-pressed="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <p class="field-msg" id="signup-confirm-msg" hidden></p>
+          </div>
+
+          <button class="btn btn-primary btn-lg" id="signup-btn" type="submit">Create Account</button>
+        </form>
+
+        <p class="auth-alt">Already have an account?
+          <button class="auth-link" type="button" onclick="showSignIn()">Sign In</button>
+        </p>
+      </div>
+    </section>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════

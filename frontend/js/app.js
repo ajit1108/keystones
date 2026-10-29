@@ -4,13 +4,63 @@
 
 let notifTimer = null;
 
-/* ── Login / logout ──────────────────────────────────────────────── */
-function loginAlert(message, type = 'error') {
-  const box = document.getElementById('login-alert');
+/* ── Auth screens ────────────────────────────────────────────────── */
+const AUTH_ALERT_ICONS = { error: '✕', success: '✓', info: 'ℹ' };
+
+function authAlert(targetId, message, type = 'error') {
+  const box = document.getElementById(targetId);
   if (!box) return;
   box.innerHTML = message
-    ? `<div class="alert alert-${type}"><span>${type === 'error' ? '✕' : 'ℹ'}</span> ${esc(message)}</div>`
+    ? `<div class="alert alert-${type}"><span aria-hidden="true">${AUTH_ALERT_ICONS[type] || AUTH_ALERT_ICONS.info}</span> ${esc(message)}</div>`
     : '';
+}
+
+function loginAlert(message, type = 'error') { authAlert('login-alert', message, type); }
+function signupAlert(message, type = 'error') { authAlert('signup-alert', message, type); }
+
+function authScreenFromHash() {
+  return window.location.hash === '#signup' ? 'signup' : 'login';
+}
+
+function setAuthScreen(screen, { push = false } = {}) {
+  const target = screen === 'signup' ? 'signup' : 'login';
+
+  document.querySelectorAll('.auth-panel').forEach(panel => {
+    const active = panel.id === `auth-${target}`;
+    panel.classList.toggle('active', active);
+    panel.setAttribute('aria-hidden', String(!active));
+  });
+
+  ['login-password', 'signup-password', 'signup-confirm'].forEach(id => {
+    const input = document.getElementById(id);
+    if (input) input.type = 'password';
+  });
+  document.querySelectorAll('.pw-toggle').forEach(btn => {
+    btn.setAttribute('aria-label', 'Show password');
+    btn.setAttribute('aria-pressed', 'false');
+  });
+
+  document.title = target === 'signup' ? 'Keystone FSM — Create account' : 'Keystone FSM — Sign in';
+
+  const url = window.location.pathname + window.location.search + (target === 'signup' ? '#signup' : '');
+  if (push) history.pushState({ auth: target }, '', url);
+  else history.replaceState({ auth: target }, '', url);
+}
+
+function focusAuthField(id) {
+  setTimeout(() => document.getElementById(id)?.focus(), 60);
+}
+
+function showSignup() {
+  setAuthScreen('signup', { push: true });
+  signupAlert('');
+  focusAuthField('signup-name');
+}
+
+function showSignIn() {
+  setAuthScreen('login', { push: true });
+  loginAlert('');
+  focusAuthField('login-email');
 }
 
 function showLogin(message) {
@@ -20,8 +70,9 @@ function showLogin(message) {
   if (panel) panel.hidden = true;
   document.getElementById('app').hidden = true;
   document.getElementById('login-page').classList.add('active');
+  setAuthScreen('login');
   loginAlert(message || '');
-  setTimeout(() => document.getElementById('login-email')?.focus(), 60);
+  focusAuthField('login-email');
 }
 
 async function handleLogin(event) {
@@ -42,6 +93,7 @@ async function handleLogin(event) {
     const data = await api.login(email, password);
     Auth.save(data);
     document.getElementById('login-form').reset();
+    document.getElementById('login-password').type = 'password';
     showApp();
   } catch (e) {
     loginAlert(e.message || 'Sign-in failed. Please try again.');
@@ -50,24 +102,154 @@ async function handleLogin(event) {
   }
 }
 
-function fillLogin(email, password) {
-  document.getElementById('login-email').value = email;
-  document.getElementById('login-password').value = password;
-  loginAlert('');
-  document.getElementById('login-password').focus();
-}
-
-function togglePassword() {
-  const input = document.getElementById('login-password');
-  const btn = document.getElementById('pw-toggle');
+function togglePasswordVisibility(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (!input || !btn) return;
   const show = input.type === 'password';
   input.type = show ? 'text' : 'password';
   btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+  btn.setAttribute('aria-pressed', String(show));
+}
+
+/* ── Sign-up form ────────────────────────────────────────────────── */
+const SIGNUP_FIELDS = ['signup-name', 'signup-email', 'signup-password', 'signup-confirm'];
+let signupBusy = false;
+
+function setFieldError(id, message) {
+  const input = document.getElementById(id);
+  const msg = document.getElementById(`${id}-msg`);
+  if (input) {
+    input.classList.add('is-invalid');
+    input.setAttribute('aria-invalid', 'true');
+  }
+  if (msg) {
+    msg.textContent = message;
+    msg.hidden = false;
+  }
+}
+
+function clearFieldError(id) {
+  const input = document.getElementById(id);
+  const msg = document.getElementById(`${id}-msg`);
+  if (input) {
+    input.classList.remove('is-invalid');
+    input.removeAttribute('aria-invalid');
+  }
+  if (msg) {
+    msg.hidden = true;
+    msg.textContent = '';
+  }
+}
+
+function clearSignupErrors() {
+  SIGNUP_FIELDS.forEach(clearFieldError);
+  signupAlert('');
+}
+
+function updatePasswordMeter() {
+  const value = document.getElementById('signup-password')?.value || '';
+  const meter = document.getElementById('signup-pw-meter');
+  const label = document.getElementById('signup-pw-strength');
+  if (!meter || !label) return;
+
+  let score = 0;
+  if (value.length >= 8) score++;
+  if (value.length >= 12) score++;
+  if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
+  if (/\d/.test(value)) score++;
+  if (/[^A-Za-z0-9]/.test(value)) score++;
+  score = value ? Math.max(1, Math.min(score, 4)) : 0;
+
+  meter.dataset.score = String(score);
+  const words = ['', 'Weak password', 'Fair password', 'Good password', 'Strong password'];
+  if (!value) label.textContent = 'Use 8+ characters with a letter and a number';
+  else if (value.length < 8) label.textContent = 'Too short — use at least 8 characters';
+  else if (!/[A-Za-z]/.test(value) || !/\d/.test(value)) label.textContent = 'Add a letter and a number';
+  else label.textContent = words[score];
+}
+
+function validateSignup() {
+  clearSignupErrors();
+  const name = document.getElementById('signup-name').value.trim().replace(/\s+/g, ' ');
+  const email = document.getElementById('signup-email').value.trim();
+  const password = document.getElementById('signup-password').value;
+  const confirm = document.getElementById('signup-confirm').value;
+  let firstInvalid = null;
+
+  const fail = (id, message) => {
+    setFieldError(id, message);
+    if (!firstInvalid) firstInvalid = document.getElementById(id);
+  };
+
+  if (!name) fail('signup-name', 'Enter your full name.');
+  else if (!name.includes(' ')) fail('signup-name', 'Enter your first and last name.');
+  else if (name.length > 160) fail('signup-name', 'Name is too long.');
+
+  if (!email) fail('signup-email', 'Enter your email address.');
+  else if (email.length > 160 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    fail('signup-email', 'Enter a valid email address.');
+  }
+
+  if (!password) fail('signup-password', 'Enter a password.');
+  else if (password.length < 8) fail('signup-password', 'Use at least 8 characters.');
+  else if (!/[A-Za-z]/.test(password) || !/\d/.test(password)) {
+    fail('signup-password', 'Include at least one letter and one number.');
+  }
+
+  if (!confirm) fail('signup-confirm', 'Confirm your password.');
+  else if (confirm !== password) fail('signup-confirm', 'Passwords do not match.');
+
+  if (firstInvalid) firstInvalid.focus();
+  return !firstInvalid;
+}
+
+async function handleRegister(event) {
+  if (event) event.preventDefault();
+  if (signupBusy || !validateSignup()) return;
+
+  const btn = document.getElementById('signup-btn');
+  const fullName = document.getElementById('signup-name').value.trim().replace(/\s+/g, ' ');
+  const email = document.getElementById('signup-email').value.trim();
+  const password = document.getElementById('signup-password').value;
+  const confirmPassword = document.getElementById('signup-confirm').value;
+
+  signupBusy = true;
+  signupAlert('');
+  setBtnBusy(btn, true, 'Creating account…');
+
+  try {
+    await api.register({ fullName, email, password, confirmPassword });
+    document.getElementById('signup-form').reset();
+    updatePasswordMeter();
+    document.getElementById('login-email').value = email;
+    showLogin();
+    loginAlert('Account created. Sign in to continue.', 'success');
+    focusAuthField('login-password');
+  } catch (e) {
+    const fieldMap = {
+      fullName: 'signup-name',
+      email: 'signup-email',
+      password: 'signup-password',
+      confirmPassword: 'signup-confirm',
+    };
+    if (e.status === 409) {
+      setFieldError('signup-email', 'That email is already registered.');
+    } else {
+      Object.entries(e.data?.fieldErrors || {}).forEach(([field, message]) => {
+        if (fieldMap[field]) setFieldError(fieldMap[field], message);
+      });
+    }
+    signupAlert(e.message || 'Could not create your account. Please try again.');
+  } finally {
+    signupBusy = false;
+    setBtnBusy(btn, false);
+  }
 }
 
 function logout() {
   Auth.clear();
   stopNotificationPolling();
+  history.replaceState(null, '', window.location.pathname + window.location.search);
   window.location.reload();
 }
 
@@ -75,6 +257,10 @@ function logout() {
 function showApp() {
   const user = Auth.getUser();
   if (!user) { showLogin(); return; }
+
+  if (window.location.hash) {
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
 
   document.getElementById('login-page').classList.remove('active');
   loginAlert('');
@@ -283,12 +469,37 @@ document.addEventListener('visibilitychange', () => {
 });
 
 /* ── Session expiry hook used by api.js ──────────────────────────── */
-window.onSessionExpired = () => showLogin('Your session has expired. Please sign in again.');
+window.onSessionExpired = () => {
+  Auth.clear();
+  showLogin('Your session has expired. Please sign in again.');
+};
+
+/* Keep the visible auth screen in sync with browser back/forward */
+window.addEventListener('popstate', () => {
+  if (Auth.isLoggedIn()) {
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    return;
+  }
+  if (!document.getElementById('login-page')?.classList.contains('active')) return;
+
+  const screen = authScreenFromHash();
+  setAuthScreen(screen);
+  loginAlert('');
+  signupAlert('');
+  focusAuthField(screen === 'signup' ? 'signup-name' : 'login-email');
+});
 
 /* ── Boot ────────────────────────────────────────────────────────── */
 async function boot() {
+  const requestedScreen = authScreenFromHash();
   if (!Auth.isLoggedIn()) {
     showLogin();
+    if (requestedScreen === 'signup') {
+      setAuthScreen('signup');
+      focusAuthField('signup-name');
+    }
     return;
   }
   try {
